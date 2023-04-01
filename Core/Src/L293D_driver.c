@@ -6,6 +6,23 @@
  */
 #include "L293D_driver.h"
 
+
+void L293D_motor_init(struct L293D_motor_t *pmotor, TIM_HandleTypeDef *htim,
+		uint32_t tim_channel, uint8_t clockwise_rotation_enable_pin,
+		uint8_t counterclockwise_rotation_enable_pin,
+		GPIO_TypeDef *clockwise_rotation_enable_port,
+		GPIO_TypeDef *counterclockwise_rotation_enable_port){
+
+	pmotor->htimer = htim;
+	pmotor->timer_channel = tim_channel;
+	pmotor->clockwise_rotation_enable_pin = clockwise_rotation_enable_pin;
+	pmotor->counterclockwise_rotation_enable_pin = counterclockwise_rotation_enable_pin;
+	pmotor->clockwise_rotation_enable_port = clockwise_rotation_enable_port;
+	pmotor->counterclockwise_rotation_enable_port;
+	pmotor->direction_of_rotation_flag = MOTOR_ROTATION_CLOCKWISE;
+
+}
+
 void EnorDi_pwm_signal(struct L293D_motor_t *pmotor, uint8_t EnorDi){
 
 	if(EnorDi == ENABLE){
