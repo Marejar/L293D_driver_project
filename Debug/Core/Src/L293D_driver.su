@@ -1,0 +1,4 @@
+L293D_driver.c:9:6:EnorDi_pwm_signal	16	static
+L293D_driver.c:21:6:increase_motor_speed	32	static
+L293D_driver.c:54:6:decrease_motor_speed	32	static
+L293D_driver.c:87:6:StopOrStart_motor_f	16	static
