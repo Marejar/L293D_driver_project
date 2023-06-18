@@ -22,7 +22,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <string.h>
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,7 +47,8 @@ UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+volatile uint32_t pulse;
+char message[60];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -96,6 +98,12 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  struct L293D_motor_t left_motor;
+
+  L293D_motor_init(&left_motor, &htim3, TIM_CHANNEL_1, MOTOR1_CLOCKWISE_EN_PIN_Pin,
+		  MOTOR1_COUNTERCLOCKWISE_EN_PIN_Pin, GPIOB, GPIOB);
+  select_motor_rotation_direction(&left_motor, MOTOR_ROTATION_CLOCKWISE);
+  EnorDi_pwm_signal(&left_motor, ENABLE);
 
   /* USER CODE END 2 */
 
@@ -104,7 +112,19 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	  select_motor_rotation_direction(&left_motor, MOTOR_ROTATION_CLOCKWISE);
+	  HAL_Delay(3000);
 
+	  sprintf(message, "Pulse: %d, dir: %d \n\r", (int)left_motor.htimer->Instance->CCR1,
+	    		  (int)left_motor.direction_of_rotation_flag);
+	  HAL_UART_Transmit(&huart2, (uint8_t*)message, strlen(message), 20);
+
+	  select_motor_rotation_direction(&left_motor, MOTOR_ROTATION_COUNTERCLOCKWISE);
+	  HAL_Delay(3000);
+
+	  sprintf(message, "Pulse: %d, dir: %d \n\r", (int)left_motor.htimer->Instance->CCR1,
+	    		  (int)left_motor.direction_of_rotation_flag);
+	  HAL_UART_Transmit(&huart2, (uint8_t*)message, strlen(message), 20);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -190,7 +210,7 @@ static void MX_TIM3_Init(void)
     Error_Handler();
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 110;
+  sConfigOC.Pulse = 300;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
@@ -293,6 +313,9 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, MOTOR1_CLOCKWISE_EN_PIN_Pin|MOTOR1_COUNTERCLOCKWISE_EN_PIN_Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
@@ -305,6 +328,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : MOTOR1_CLOCKWISE_EN_PIN_Pin MOTOR1_COUNTERCLOCKWISE_EN_PIN_Pin */
+  GPIO_InitStruct.Pin = MOTOR1_CLOCKWISE_EN_PIN_Pin|MOTOR1_COUNTERCLOCKWISE_EN_PIN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 }
 

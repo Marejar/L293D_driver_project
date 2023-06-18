@@ -1,4 +1,6 @@
-L293D_driver.c:9:6:EnorDi_pwm_signal	16	static
-L293D_driver.c:21:6:increase_motor_speed	32	static
-L293D_driver.c:54:6:decrease_motor_speed	32	static
-L293D_driver.c:87:6:StopOrStart_motor_f	16	static
+L293D_driver.c:10:6:L293D_motor_init	24	static
+L293D_driver.c:26:6:EnorDi_pwm_signal	16	static
+L293D_driver.c:38:6:increase_motor_speed	32	static
+L293D_driver.c:75:6:decrease_motor_speed	32	static
+L293D_driver.c:112:6:StopOrStart_motor	16	static
+L293D_driver.c:140:6:select_motor_rotation_direction	16	static

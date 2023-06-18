@@ -32,7 +32,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "L293D_driver.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -68,6 +68,10 @@ void Error_Handler(void);
 #define USART_RX_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
+#define MOTOR1_CLOCKWISE_EN_PIN_Pin GPIO_PIN_1
+#define MOTOR1_CLOCKWISE_EN_PIN_GPIO_Port GPIOB
+#define MOTOR1_COUNTERCLOCKWISE_EN_PIN_Pin GPIO_PIN_2
+#define MOTOR1_COUNTERCLOCKWISE_EN_PIN_GPIO_Port GPIOB
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14

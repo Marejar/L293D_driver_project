@@ -35,7 +35,12 @@ struct L293D_motor_t{
 };
 
 
-void L293D_motor_init(struct L293D_motor_t *pmotor, TIM_HandleTypeDef *htim, uint32_t tim_channel, uint8_t clockwise_rotation_enable_pin, uint8_t counterclockwise_rotation_enable_pin);
+void L293D_motor_init(struct L293D_motor_t *pmotor, TIM_HandleTypeDef *htim,
+		uint32_t tim_channel, uint8_t clockwise_rotation_enable_pin,
+		uint8_t counterclockwise_rotation_enable_pin,
+		GPIO_TypeDef *clockwise_rotation_enable_port,
+		GPIO_TypeDef *counterclockwise_rotation_enable_port);
+
 void EnorDi_pwm_signal(struct L293D_motor_t *pmotor, uint8_t EnorDi);
 void increase_motor_speed(struct L293D_motor_t *pmotor);
 void decrease_motor_speed(struct L293D_motor_t *pmotor);
